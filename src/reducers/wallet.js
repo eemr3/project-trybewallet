@@ -6,4 +6,6 @@ const INITIA_STATE = {
   },
 };
 
-const reducerWallet = (state = INITIA_STATE, action) => state;
+const reducerWallet = (state = INITIA_STATE) => state;
+
+export default reducerWallet;
