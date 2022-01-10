@@ -8,6 +8,8 @@ class Input extends Component {
       placeholderText,
       typeInput,
       nameInput,
+      minValue,
+      valueInput,
       dataTestId } = this.props;
     return (
       <input
@@ -16,21 +18,28 @@ class Input extends Component {
         placeholder={ placeholderText }
         name={ nameInput }
         data-testid={ dataTestId }
+        min={ minValue }
+        value={ valueInput }
       />
     );
   }
 }
 
 Input.propTypes = {
-  placeholderText: PropTypes.string.isRequired,
+  placeholderText: PropTypes.string,
   dataTestId: PropTypes.string,
   typeInput: PropTypes.string.isRequired,
+  minValue: PropTypes.string,
   nameInput: PropTypes.string,
   handleInputChange: PropTypes.func,
+  valueInput: PropTypes.string,
 };
 
 Input.defaultProps = {
+  placeholderText: '',
   nameInput: '',
+  valueInput: '',
+  minValue: '',
   dataTestId: '',
   handleInputChange: () => {},
 };
