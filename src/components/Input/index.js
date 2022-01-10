@@ -3,13 +3,19 @@ import PropTypes from 'prop-types';
 
 class Input extends Component {
   render() {
-    const { handleInputChange, placeholderText, typeInput, nameInput } = this.props;
+    const {
+      handleInputChange,
+      placeholderText,
+      typeInput,
+      nameInput,
+      dataTestId } = this.props;
     return (
       <input
         type={ typeInput }
         onChange={ handleInputChange }
         placeholder={ placeholderText }
         name={ nameInput }
+        data-testid={ dataTestId }
       />
     );
   }
@@ -17,6 +23,7 @@ class Input extends Component {
 
 Input.propTypes = {
   placeholderText: PropTypes.string.isRequired,
+  dataTestId: PropTypes.string,
   typeInput: PropTypes.string.isRequired,
   nameInput: PropTypes.string,
   handleInputChange: PropTypes.func,
@@ -24,6 +31,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
   nameInput: '',
+  dataTestId: '',
   handleInputChange: () => {},
 };
 export default Input;
