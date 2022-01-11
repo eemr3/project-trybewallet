@@ -8,20 +8,22 @@ import Input from '../components/Input';
 import Select from '../components/Select';
 import Button from '../components/Button';
 import Table from '../components/Table';
-
+import { paymentMethod, tagsArray } from '../data/data';
 import './Wallet.css';
 
-const method = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
-const tagsArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 class Wallet extends React.Component {
   constructor() {
     super();
     this.state = {
-      valueSpend: '0',
-      currency: 'BRL',
-      paymentMethod: 'Dinheiro',
-      description: '',
-      tags: 'Alimentaçaõ',
+      expenses: {
+        id: 0,
+        value: '0',
+        currency: '',
+        method: 'Dinheiro',
+        description: '',
+        tag: 'Alimentaçaõ',
+      },
+      total: 0,
     };
   }
 
@@ -32,36 +34,60 @@ class Wallet extends React.Component {
 
   handleInputChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
+    this.setState((prevState) => ({
+      expenses: { ...prevState.expenses, [name]: value },
 
-    });
+    }));
+  }
+
+  calcExpenses = () => {
+    const { getQuotation } = this.props;
+    const { expenses: { value, currency } } = this.state;
+    const findCurrrencys = Object.values(getQuotation[0])
+      .find((curr) => (curr.code === currency));
+
+    const totalExpenses = (Number(value) * findCurrrencys.ask);
+    this.setState((state) => ({
+      total: state.total + totalExpenses,
+    }));
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { addExpenses } = this.props;
-    addExpenses(this.state);
+    const { addExpenses, getQuotation, getCurrency } = this.props;
+    getCurrency();
+    this.setState((prevState) => ({
+      expenses: { id: prevState.expenses.id + 1,
+        value: '0',
+        currency: '',
+        method: 'Dinheiro',
+        description: '',
+        tag: 'Alimentaçaõ',
+      },
+    }));
+    const { expenses } = this.state;
+    addExpenses({ ...expenses, exchangeRates: getQuotation[0] });
+    this.calcExpenses();
   }
 
   render() {
     const { getCurrencyState } = this.props;
-    const {
-      valueSpend,
+    const { expenses: {
+      value,
       description,
       currency,
-      paymentMethod,
-      tags } = this.state;
+      method,
+      tag }, total } = this.state;
     return (
       <>
-        <Header />
+        <Header total={ total } />
         <Form classForm="container" handleSubmitForm={ this.handleSubmit }>
           <Input
             dataTestId="value-input"
-            nameInput="valueSpend"
+            nameInput="value"
             typeInput="number"
             minValue="0"
-            valueInput={ valueSpend }
+            valueInput={ value }
             handleInputChange={ this.handleInputChange }
             textLabel="Valor"
             idLabel="valor-input"
@@ -76,12 +102,12 @@ class Wallet extends React.Component {
             handleInputChange={ this.handleInputChange }
           />
           <Select
-            dataInfo={ method }
+            dataInfo={ paymentMethod }
             dataTestId="method-input"
             labelSelectText="Método de pagamento"
             idSelect="method-select"
-            nameSelect="paymentMethod"
-            selectValue={ paymentMethod }
+            nameSelect="method"
+            selectValue={ method }
             handleInputChange={ this.handleInputChange }
           />
           <Select
@@ -89,8 +115,8 @@ class Wallet extends React.Component {
             dataTestId="tag-input"
             labelSelectText="Tag"
             idSelect="tag-select"
-            nameSelect="tags"
-            selectValue={ tags }
+            nameSelect="tag"
+            selectValue={ tag }
             handleInputChange={ this.handleInputChange }
           />
           <Input
@@ -112,6 +138,7 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   getCurrencyState: state.wallet.currencies,
+  getQuotation: state.wallet.quotation,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -123,10 +150,12 @@ Wallet.propTypes = {
   addExpenses: PropTypes.func,
   getCurrency: PropTypes.func,
   getCurrencyState: PropTypes.arrayOf(PropTypes.string).isRequired,
+  getQuotation: PropTypes.arrayOf([]),
 };
 
 Wallet.defaultProps = {
   addExpenses: () => {},
   getCurrency: () => {},
+  getQuotation: [],
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
