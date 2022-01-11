@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 class Form extends Component {
   render() {
-    const { children, handleSubmitForm } = this.props;
+    const { children, handleSubmitForm, classForm } = this.props;
     return (
-      <form onSubmit={ handleSubmitForm }>
+      <form onSubmit={ handleSubmitForm } className={ classForm }>
         {children}
       </form>
     );
@@ -18,9 +18,11 @@ Form.propTypes = {
     PropTypes.node,
   ]).isRequired,
   handleSubmitForm: PropTypes.func,
+  classForm: PropTypes.string,
 };
 
 Form.defaultProps = {
   handleSubmitForm: () => {},
+  classForm: '',
 };
 export default Form;
