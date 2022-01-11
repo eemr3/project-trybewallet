@@ -1,0 +1,12 @@
+header {
+  align-items: center;
+  background-color: rgb(71, 70, 70);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+header p {
+  font-size: 1.2rem;
+}
