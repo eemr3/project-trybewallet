@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import Form from '../components/Form';
-import { loginInfo } from '../actions';
+import { loginData } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -84,7 +84,7 @@ Login.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  submitLogin: (email) => dispatch(loginInfo(email)),
+  submitLogin: (email) => dispatch(loginData(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
