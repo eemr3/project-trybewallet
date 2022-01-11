@@ -6,7 +6,7 @@ import './Header.css';
 
 class Header extends Component {
   render() {
-    const { userEmail, walletExpesseTotal } = this.props;
+    const { userEmail, total } = this.props;
     return (
       <header>
         <h1>TrybeWallet</h1>
@@ -20,9 +20,8 @@ class Header extends Component {
           {' '}
           R$
           <span data-testid="total-field">
-            {walletExpesseTotal.length === 0 ? '0'
-              : walletExpesseTotal
-                .reduce((acc, curr) => acc + Number(curr.valueSpend), 0)}
+
+            {total ? total.toFixed(2) : 0}
           </span>
           {' '}
           <span data-testid="header-currency-field">BRL</span>
@@ -34,19 +33,20 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   userEmail: state.user.email,
-  walletExpesseTotal: state.wallet.expenses,
 });
 
 Header.propTypes = {
   userEmail: PropTypes.string,
-  walletExpesseTotal: PropTypes.arrayOf(PropTypes.shape({
-    valueSpend: PropTypes.number,
-  })),
+  total: PropTypes.number,
+  // walletExpesseTotal: PropTypes.arrayOf(PropTypes.shape({
+  //   valueSpend: PropTypes.string,
+  // })),
 };
 
 Header.defaultProps = {
   userEmail: '',
-  walletExpesseTotal: {},
+  total: 0,
+  // walletExpesseTotal: {},
 };
 
 export default connect(mapStateToProps, null)(Header);
