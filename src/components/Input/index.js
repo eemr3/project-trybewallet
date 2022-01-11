@@ -10,17 +10,24 @@ class Input extends Component {
       nameInput,
       minValue,
       valueInput,
-      dataTestId } = this.props;
+      idLabel,
+      dataTestId,
+      textLabel } = this.props;
     return (
-      <input
-        type={ typeInput }
-        onChange={ handleInputChange }
-        placeholder={ placeholderText }
-        name={ nameInput }
-        data-testid={ dataTestId }
-        min={ minValue }
-        value={ valueInput }
-      />
+      <label htmlFor={ idLabel }>
+        {textLabel}
+        <input
+          id={ idLabel }
+          type={ typeInput }
+          onChange={ handleInputChange }
+          placeholder={ placeholderText }
+          name={ nameInput }
+          data-testid={ dataTestId }
+          min={ minValue }
+          value={ valueInput }
+        />
+
+      </label>
     );
   }
 }
@@ -33,6 +40,8 @@ Input.propTypes = {
   nameInput: PropTypes.string,
   handleInputChange: PropTypes.func,
   valueInput: PropTypes.string,
+  idLabel: PropTypes.string,
+  textLabel: PropTypes.string,
 };
 
 Input.defaultProps = {
@@ -41,6 +50,8 @@ Input.defaultProps = {
   valueInput: '',
   minValue: '',
   dataTestId: '',
+  idLabel: '',
+  textLabel: '',
   handleInputChange: () => {},
 };
 export default Input;
