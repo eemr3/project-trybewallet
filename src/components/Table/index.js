@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Table.css';
+import { connect } from 'react-redux';
 
-function Table() {
+function Table({ getExpenses }) {
   return (
     <table>
       <thead>
@@ -19,64 +21,36 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-
-        <tr>
-          <td>Alfreds Futterkiste</td>
-          <td>Maria Anders</td>
-          <td>Germany</td>
-          <td>Germany</td>
-          <td>Germany</td>
-          <td>Germany</td>
-          <td>Germany</td>
-        </tr>
-        <tr>
-          <td>Centro comercial Moctezuma</td>
-          <td>Francisco Chang</td>
-          <td>Mexico</td>
-          <td>Mexico</td>
-          <td>Mexico</td>
-          <td>Mexico</td>
-          <td>Mexico</td>
-        </tr>
-        <tr>
-          <td>Ernst Handel</td>
-          <td>Roland Mendel</td>
-          <td>Austria</td>
-          <td>Austria</td>
-          <td>Austria</td>
-          <td>Austria</td>
-          <td>Austria</td>
-        </tr>
-        <tr>
-          <td>Island Trading</td>
-          <td>Helen Bennett</td>
-          <td>UK</td>
-          <td>UK</td>
-          <td>UK</td>
-          <td>UK</td>
-          <td>UK</td>
-        </tr>
-        <tr>
-          <td>Laughing Bacchus Winecellars</td>
-          <td>Yoshi Tannamuri</td>
-          <td>Canada</td>
-          <td>Canada</td>
-          <td>Canada</td>
-          <td>Canada</td>
-          <td>Canada</td>
-        </tr>
-        <tr>
-          <td>Magazzini Alimentari Riuniti</td>
-          <td>Giovanni Rovelli</td>
-          <td>Italy</td>
-          <td>Italy</td>
-          <td>Italy</td>
-          <td>Italy</td>
-          <td>Italy</td>
-        </tr>
+        {getExpenses.map((expense) => (
+          <tr key={ expense.id }>
+            <td>{expense.description}</td>
+            <td>{expense.tag}</td>
+            <td>{expense.method}</td>
+            <td>{expense.value}</td>
+            <td>{expense.exchangeRates[expense.currency].name}</td>
+            <td>{Number(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
+            <td>
+              {Number(expense.exchangeRates[expense.currency].ask
+               * expense.value).toFixed(2)}
+            </td>
+            <td>Real</td>
+            <td>Excluir/Editar</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
 }
 
-export default Table;
+const mapStateToProps = (state) => ({
+  getExpenses: state.wallet.expenses,
+});
+
+Table.propTypes = {
+  getExpenses: PropTypes.arrayOf([]),
+};
+
+Table.defaultProps = {
+  getExpenses: [],
+};
+export default connect(mapStateToProps)(Table);

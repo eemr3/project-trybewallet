@@ -24,6 +24,7 @@ class Wallet extends React.Component {
         tag: 'Alimentaçaõ',
       },
       total: 0,
+      // valuesTable: [],
     };
   }
 
@@ -51,6 +52,18 @@ class Wallet extends React.Component {
       total: state.total + totalExpenses,
     }));
   }
+
+  // setValuesInTable = () => {
+  //   const { getQuotation } = this.props;
+  //   const { expenses: { value, currency } } = this.state;
+  //   const findCurrrencys = Object.values(getQuotation[0])
+  //     .find((curr) => (curr.code === currency));
+
+  //   const totalExpenses = (Number(value) * findCurrrencys.ask);
+  //   this.setState((state) => ({
+  //     total: state.total + totalExpenses,
+  //   }));
+  // }
 
   handleSubmit = (event) => {
     event.preventDefault();
