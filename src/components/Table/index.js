@@ -47,7 +47,7 @@ const mapStateToProps = (state) => ({
 });
 
 Table.propTypes = {
-  getExpenses: PropTypes.arrayOf([]),
+  getExpenses: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 Table.defaultProps = {

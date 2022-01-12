@@ -26,7 +26,6 @@ class Input extends Component {
           min={ minValue }
           value={ valueInput }
         />
-
       </label>
     );
   }
