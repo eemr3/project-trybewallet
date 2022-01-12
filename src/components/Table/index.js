@@ -40,14 +40,18 @@ function Table({ getExpenses, setExpenses }) {
                * expense.value).toFixed(2)}
             </td>
             <td>Real</td>
-            <td>
+            <td className="cell-edit">
               <Button
                 dataTestId="delete-btn"
                 typeBtn="button"
                 handleClick={ () => teste(expense.id) }
               >
-                <i className="fas fa-trash-alt fa-1x" />
+                <i className="fas fa-trash-alt fa-2x" />
 
+              </Button>
+              {' '}
+              <Button>
+                <i className="fas fa-edit fa-2x" />
               </Button>
             </td>
           </tr>

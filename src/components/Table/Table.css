@@ -13,3 +13,14 @@ td , th {
 tr:nth-child( even ) {
   background-color: #ddd;
 }
+
+table button {
+  background-color: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cell-edit {
+  display: flex;
+  justify-content: center;
+}
