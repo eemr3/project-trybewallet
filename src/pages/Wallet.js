@@ -23,7 +23,6 @@ class Wallet extends React.Component {
         description: '',
         tag: 'Alimentaçaõ',
       },
-      total: 0,
     };
   }
 
@@ -36,18 +35,6 @@ class Wallet extends React.Component {
     const { name, value } = target;
     this.setState((prevState) => ({
       expenses: { ...prevState.expenses, [name]: value },
-    }));
-  }
-
-  calcExpenses = () => {
-    const { getQuotation } = this.props;
-    const { expenses: { value, currency } } = this.state;
-    const findCurrrencys = Object.values(getQuotation[0])
-      .find((curr) => (curr.code === currency));
-
-    const totalExpenses = (Number(value) * findCurrrencys.ask);
-    this.setState((state) => ({
-      total: state.total + totalExpenses,
     }));
   }
 
@@ -66,7 +53,6 @@ class Wallet extends React.Component {
     }));
     const { expenses } = this.state;
     addExpenses({ ...expenses, exchangeRates: getQuotation[0] });
-    this.calcExpenses();
   }
 
   render() {

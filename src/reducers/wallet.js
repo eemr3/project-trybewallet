@@ -1,4 +1,8 @@
-import { WALLET_INFO, CURRENCY_REQUEST_KEYS, CURRENCY_SUCCESS } from '../actions';
+import {
+  WALLET_INFO,
+  CURRENCY_REQUEST_KEYS,
+  CURRENCY_SUCCESS,
+  DELETE_WALLET_INFO } from '../actions';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIA_STATE = {
@@ -13,6 +17,11 @@ const reducerWallet = (state = INITIA_STATE, action) => {
     return {
       ...state,
       expenses: [...state.expenses, action.payload],
+    };
+  case DELETE_WALLET_INFO:
+    return {
+      ...state,
+      expenses: [...action.id],
     };
   case CURRENCY_SUCCESS:
     return {

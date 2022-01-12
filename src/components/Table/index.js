@@ -3,8 +3,14 @@ import PropTypes from 'prop-types';
 
 import './Table.css';
 import { connect } from 'react-redux';
+import Button from '../Button';
+import { deleWalletExpenses } from '../../actions';
 
-function Table({ getExpenses }) {
+function Table({ getExpenses, setExpenses }) {
+  const teste = (id) => {
+    setExpenses(getExpenses.filter((expense) => expense.id !== id));
+  };
+
   return (
     <table>
       <thead>
@@ -34,7 +40,16 @@ function Table({ getExpenses }) {
                * expense.value).toFixed(2)}
             </td>
             <td>Real</td>
-            <td>Excluir/Editar</td>
+            <td>
+              <Button
+                dataTestId="delete-btn"
+                typeBtn="button"
+                handleClick={ () => teste(expense.id) }
+              >
+                <i className="fas fa-trash-alt fa-1x" />
+
+              </Button>
+            </td>
           </tr>
         ))}
       </tbody>
@@ -46,11 +61,17 @@ const mapStateToProps = (state) => ({
   getExpenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  setExpenses: (expense) => dispatch(deleWalletExpenses(expense)),
+});
+
 Table.propTypes = {
   getExpenses: PropTypes.arrayOf(PropTypes.shape({})),
+  setExpenses: PropTypes.func,
 };
 
 Table.defaultProps = {
   getExpenses: [],
+  setExpenses: () => {},
 };
-export default connect(mapStateToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
