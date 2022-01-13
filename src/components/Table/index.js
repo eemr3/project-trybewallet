@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Button from '../Button';
 import { deleWalletExpenses } from '../../actions';
 
-function Table({ getExpenses, setExpenses }) {
+function Table({ getExpenses, setExpenses, handleEdit }) {
   const teste = (id) => {
     setExpenses(getExpenses.filter((expense) => expense.id !== id));
   };
@@ -27,7 +27,7 @@ function Table({ getExpenses, setExpenses }) {
         </tr>
       </thead>
       <tbody>
-        {getExpenses.map((expense) => (
+        { getExpenses.map((expense) => (
           <tr key={ expense.id }>
             <td>{expense.description}</td>
             <td>{expense.tag}</td>
@@ -42,6 +42,13 @@ function Table({ getExpenses, setExpenses }) {
             <td>Real</td>
             <td className="cell-edit">
               <Button
+                dataTestId="edit-btn"
+                handleClick={ () => handleEdit(expense.id) }
+              >
+                <i className="fas fa-edit fa-2x" />
+              </Button>
+              {' '}
+              <Button
                 dataTestId="delete-btn"
                 typeBtn="button"
                 handleClick={ () => teste(expense.id) }
@@ -49,10 +56,7 @@ function Table({ getExpenses, setExpenses }) {
                 <i className="fas fa-trash-alt fa-2x" />
 
               </Button>
-              {' '}
-              <Button>
-                <i className="fas fa-edit fa-2x" />
-              </Button>
+
             </td>
           </tr>
         ))}
@@ -72,10 +76,12 @@ const mapDispatchToProps = (dispatch) => ({
 Table.propTypes = {
   getExpenses: PropTypes.arrayOf(PropTypes.shape({})),
   setExpenses: PropTypes.func,
+  handleEdit: PropTypes.func,
 };
 
 Table.defaultProps = {
   getExpenses: [],
   setExpenses: () => {},
+  handleEdit: () => {},
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

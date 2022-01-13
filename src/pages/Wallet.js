@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchCurrencyApi, { walletExpenses } from '../actions';
+import fetchCurrencyApi, { editWalletExpenses, walletExpenses } from '../actions';
 import Header from '../components/Header';
 import Form from '../components/Form';
 import Input from '../components/Input';
@@ -23,6 +23,7 @@ class Wallet extends React.Component {
         description: '',
         tag: 'Alimentaçaõ',
       },
+      saveOrEdit: false,
     };
   }
 
@@ -38,6 +39,31 @@ class Wallet extends React.Component {
     }));
   }
 
+  handleEditExpenses = (id) => {
+    const { getExpenses } = this.props;
+    const findExpense = getExpenses.find((exp) => exp.id === id);
+    this.setState({
+      expenses: {
+        id: findExpense.id,
+        value: findExpense.value,
+        currency: findExpense.currency,
+        method: findExpense.method,
+        description: findExpense.description,
+        tag: findExpense.tag,
+      },
+      saveOrEdit: true,
+    });
+  }
+
+  handleEditSubmit = (id) => {
+    const { putExpenses, getExpenses } = this.props;
+    const findExpenseId = getExpenses.findIndex((index) => index.id === id);
+    const { expenses } = this.state;
+    const { exchangeRates } = getExpenses[findExpenseId];
+    getExpenses[findExpenseId] = { ...expenses, exchangeRates };
+    putExpenses(getExpenses);
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     const { addExpenses, getQuotation, getCurrency } = this.props;
@@ -51,8 +77,13 @@ class Wallet extends React.Component {
         tag: 'Alimentaçaõ',
       },
     }));
-    const { expenses } = this.state;
-    addExpenses({ ...expenses, exchangeRates: getQuotation[0] });
+    const { expenses, saveOrEdit } = this.state;
+    if (!saveOrEdit) {
+      addExpenses({ ...expenses, exchangeRates: getQuotation[0] });
+    } else {
+      this.handleEditSubmit(expenses.id);
+      this.setState({ saveOrEdit: false });
+    }
   }
 
   render() {
@@ -62,11 +93,14 @@ class Wallet extends React.Component {
       description,
       currency,
       method,
-      tag }, total } = this.state;
+      tag }, saveOrEdit } = this.state;
     return (
       <>
-        <Header total={ total } />
-        <Form classForm="container" handleSubmitForm={ this.handleSubmit }>
+        <Header />
+        <Form
+          classForm="container"
+          handleSubmitForm={ this.handleSubmit }
+        >
           <Input
             dataTestId="value-input"
             nameInput="value"
@@ -113,9 +147,11 @@ class Wallet extends React.Component {
             valueInput={ description }
             handleInputChange={ this.handleInputChange }
           />
-          <Button typeBtn="submit">Adicionar despesa</Button>
+          {!saveOrEdit
+            ? <Button typeBtn="submit">Adicionar despesa</Button>
+            : <Button typeBtn="submit">Editar despesa</Button>}
         </Form>
-        <Table />
+        <Table handleEdit={ this.handleEditExpenses } />
       </>
     );
   }
@@ -124,11 +160,13 @@ class Wallet extends React.Component {
 const mapStateToProps = (state) => ({
   getCurrencyState: state.wallet.currencies,
   getQuotation: state.wallet.quotation,
+  getExpenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addExpenses: (expense) => dispatch(walletExpenses(expense)),
   getCurrency: () => dispatch(fetchCurrencyApi()),
+  putExpenses: (id) => dispatch(editWalletExpenses(id)),
 });
 
 Wallet.propTypes = {
@@ -136,11 +174,17 @@ Wallet.propTypes = {
   getCurrency: PropTypes.func,
   getCurrencyState: PropTypes.arrayOf(PropTypes.string).isRequired,
   getQuotation: PropTypes.arrayOf(PropTypes.shape({})),
+  getExpenses: PropTypes.arrayOf(PropTypes.shape({
+    exchangeRates: PropTypes.shape({}),
+  })),
+  putExpenses: PropTypes.func,
 };
 
 Wallet.defaultProps = {
   addExpenses: () => {},
   getCurrency: () => {},
   getQuotation: [],
+  getExpenses: [],
+  putExpenses: () => {},
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

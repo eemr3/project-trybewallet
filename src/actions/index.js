@@ -5,6 +5,7 @@ export const LOGIN_INFO = 'LOGIN_INFO';
 
 export const WALLET_INFO = 'WALLET_INFO';
 export const DELETE_WALLET_INFO = 'DELETE_WALLET_INFO';
+export const EDIT_WALLET_INFO = 'EDIT_WALLET_INFO';
 export const CURRENCY_SUCCESS = 'CURRENCY_SUCCESS';
 export const CURRENCY_REQUEST_KEYS = 'CURRENCY_REQUEST_KEYS';
 export const CURRENCY_FAILED = 'CURRENCY_FAILED';
@@ -22,6 +23,11 @@ export const walletExpenses = (payload) => ({
 export const deleWalletExpenses = (id) => ({
   type: DELETE_WALLET_INFO,
   id,
+});
+
+export const editWalletExpenses = (payloadId) => ({
+  type: EDIT_WALLET_INFO,
+  payloadId,
 });
 
 const currencySuccess = (currency) => ({
