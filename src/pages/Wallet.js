@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchCurrencyApi, { editWalletExpenses, walletExpenses } from '../actions';
+import { paymentMethod, tagsArray } from '../data/data';
 import Header from '../components/Header';
 import Form from '../components/Form';
 import Input from '../components/Input';
 import Select from '../components/Select';
 import Button from '../components/Button';
 import Table from '../components/Table';
-import { paymentMethod, tagsArray } from '../data/data';
 import './Wallet.css';
 
 class Wallet extends React.Component {
@@ -55,7 +55,7 @@ class Wallet extends React.Component {
     });
   }
 
-  handleEditSubmit = (id) => {
+  editExpenses = (id) => {
     const { putExpenses, getExpenses } = this.props;
     const findExpenseId = getExpenses.findIndex((index) => index.id === id); // Menção a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
     const { expenses } = this.state;
@@ -64,10 +64,15 @@ class Wallet extends React.Component {
     putExpenses(getExpenses);
   }
 
+  addExpenses = () => {
+    const { addExpenses, getQuotation, getCurrency } = this.props;
+    const { expenses } = this.state;
+    getCurrency();
+    addExpenses({ ...expenses, exchangeRates: getQuotation[0] });
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    const { addExpenses, getQuotation, getCurrency } = this.props;
-    getCurrency();
     this.setState((prevState) => ({
       expenses: { id: prevState.expenses.id + 1,
         value: '0',
@@ -77,11 +82,11 @@ class Wallet extends React.Component {
         tag: 'Alimentaçaõ',
       },
     }));
-    const { expenses, saveOrEdit } = this.state;
+    const { saveOrEdit, expenses } = this.state;
     if (!saveOrEdit) {
-      addExpenses({ ...expenses, exchangeRates: getQuotation[0] });
+      this.addExpenses();
     } else {
-      this.handleEditSubmit(expenses.id);
+      this.editExpenses(expenses.id);
       this.setState({ saveOrEdit: false });
     }
   }
