@@ -18,7 +18,7 @@ class Wallet extends React.Component {
       expenses: {
         id: 0,
         value: '0',
-        currency: '',
+        currency: 'USD',
         method: 'Dinheiro',
         description: '',
         tag: 'Alimentaçaõ',
@@ -57,10 +57,10 @@ class Wallet extends React.Component {
 
   handleEditSubmit = (id) => {
     const { putExpenses, getExpenses } = this.props;
-    const findExpenseId = getExpenses.findIndex((index) => index.id === id);
+    const findExpenseId = getExpenses.findIndex((index) => index.id === id); // Mensão a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
     const { expenses } = this.state;
     const { exchangeRates } = getExpenses[findExpenseId];
-    getExpenses[findExpenseId] = { ...expenses, exchangeRates };
+    getExpenses[findExpenseId] = { ...expenses, exchangeRates }; // Mensão a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
     putExpenses(getExpenses);
   }
 
@@ -71,7 +71,7 @@ class Wallet extends React.Component {
     this.setState((prevState) => ({
       expenses: { id: prevState.expenses.id + 1,
         value: '0',
-        currency: '',
+        currency: 'USD',
         method: 'Dinheiro',
         description: '',
         tag: 'Alimentaçaõ',
