@@ -57,10 +57,10 @@ class Wallet extends React.Component {
 
   handleEditSubmit = (id) => {
     const { putExpenses, getExpenses } = this.props;
-    const findExpenseId = getExpenses.findIndex((index) => index.id === id); // Mensão a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
+    const findExpenseId = getExpenses.findIndex((index) => index.id === id); // Menção a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
     const { expenses } = this.state;
     const { exchangeRates } = getExpenses[findExpenseId];
-    getExpenses[findExpenseId] = { ...expenses, exchangeRates }; // Mensão a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
+    getExpenses[findExpenseId] = { ...expenses, exchangeRates }; // Menção a colaboração do colega e amigo Rafael (Carvalho) Santos - Turma-16A
     putExpenses(getExpenses);
   }
 
