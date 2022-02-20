@@ -32,7 +32,7 @@ Testar aplicações react-redux de forma síncrona.
 
 ## Stack utilizada
 
-**Front-end:** React, Node, Redux
+**Front-end:** React, Node, Redux, Bootstrap
 
 ## Rodando localmente
 
