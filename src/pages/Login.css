@@ -1,0 +1,10 @@
+.login-container-form {
+  display: flex;
+  flex-direction: column;
+  height: 35vh;
+  margin: 14.7% auto;  
+}
+
+.container {
+  width: 98.65% !important;
+}

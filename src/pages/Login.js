@@ -6,6 +6,8 @@ import Input from '../components/Input';
 import Form from '../components/Form';
 import { loginData } from '../actions';
 
+import './Login.css';
+
 class Login extends React.Component {
   constructor() {
     super();
@@ -47,8 +49,11 @@ class Login extends React.Component {
     const { email, password, isDisabled } = this.state;
 
     return (
-      <main>
-        <Form handleSubmitForm={ this.handleSubmit }>
+      <main className="container">
+        <Form
+          classForm="login-container-form"
+          handleSubmitForm={ this.handleSubmit }
+        >
           <Input
             dataTestId="email-input"
             placeholderText="E-mail"
